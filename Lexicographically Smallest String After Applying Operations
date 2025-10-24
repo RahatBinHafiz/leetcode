@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string findLexSmallestString(string s, int a, int b) {
+      string smallest = s;
+      queue<string >q;
+      unordered_set<string>visited;
+      q.push(smallest);
+      visited.insert(smallest);
+
+      while(!q.empty())
+      {
+        string curr = q.front();
+        q.pop();
+        if(curr < smallest) smallest = curr;
+        for(int i = 1; i<curr.size(); i+=2) 
+        {
+            curr[i] = ((curr[i] - '0')+a) %10 + '0'; 
+        } 
+
+        if(!visited.count(curr))
+        {
+            visited.insert(curr);
+            q.push(curr);
+        }
+
+        string recent = curr;
+        recent = curr.substr(b);
+        recent += curr.substr(0,b);
+
+          if(!visited.count(recent))
+        {
+            visited.insert(recent);
+            q.push(recent);
+        }
+
+      }
+      return smallest;
+    }
+};
