@@ -1,1 +1,33 @@
+class Solution {
+public:
+    #define ll long long int 
+    int maxFrequency(vector<int>& nums, int k, ll numop) {
+        int n = nums.size(); 
+        ll ans = 0;
+        sort(nums.begin(), nums.end());
+        map<int, int>mp; 
+        vector<ll>pre(nums[n-1] +k+1 , 0);
+        for(auto i:nums) 
+        {
+            mp[i]++;
+            pre[i]++;
+        }   
+        for(int i = 1; i< pre.size(); i++)
+        {
+            pre[i] = pre[i-1] +pre[i];
+        }
+        //for(auto i:pre) cout << i << " "; cout << endl;
+        
+        for(int i = 0; i<= nums[n-1]; i++)
+        {
+            if(pre[i] == 0) continue;
+            int mn = max(i-k,1);
+            int mx = i+k;
+            ll cnt = mp[i] + min(numop, pre[mx] - pre[mn-1] - mp[i]) ;
+            ans  = max(ans,cnt);
 
+        }
+
+        return ans; 
+    }
+};
