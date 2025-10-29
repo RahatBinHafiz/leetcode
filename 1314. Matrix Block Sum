@@ -1,0 +1,32 @@
+
+class Solution {
+public:
+    #define ll long long int
+    vector<vector<int>> matrixBlockSum(vector<vector<int>>& v, int k) {
+
+   int l = v.size(), m = v[0].size();
+   vector<vector<ll>>pre(l+1, vector<ll>(m+1));
+   for(int i =1; i<=l; i++)
+   {
+    for(int j = 1; j<=m; j++)
+    {
+        pre[i][j] = pre[i-1][j] + pre[i][j-1] + v[i-1][j-1] - pre[i-1][j-1];
+    }
+   }
+   vector<vector<int>> ans(l, vector<int>(m));
+   cout << l << " " << m << endl;
+   for(int i = 0; i<l ; i++)
+   {
+    for(int j = 0; j<m ; j++)
+    {
+        int a = max(i-k , 0), b = max(j-k, 0), c= min(l-1, i+k) , d = min(m-1 , j+k);
+        a++; b++; c++; d++;
+        cout << a << " " << b <<" " <<c <<" " << d <<" " << endl;
+        ans[i][j] = pre[c][d] - pre[c][b-1] -pre[a-1][d] + pre[a-1] [b-1];       
+    }
+   }
+
+   return ans;
+
+    }
+};
