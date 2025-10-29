@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int canBeTypedWords(string text, string bl) {
+       int n = bl.size();
+       map<char,int>mp;
+       for(auto i:bl) mp[i]++;
+       int  ans = 0;
+       bool ok = true;
+       int totall = 1;
+       for(auto i:text)
+       {
+         if(ok && mp.count(i) && ok) {
+             ans++;
+             ok = false;
+         }
+         if(i == ' ') {
+            ok = true; totall++;
+         }
+       }
+       cout << totall << " " << ans << endl;
+       return totall - ans;
+    }
+};
