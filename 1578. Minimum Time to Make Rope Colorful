@@ -1,0 +1,32 @@
+class Solution {
+public:
+    #define ll long long int
+    int minCost(string s, vector<int>& v) {
+
+        ll n = s.size();
+        ll ans = 0;
+        ll curr = v[0];
+        int mn = v[0];
+        for(int i = 1; i<n; i++)
+        {
+        if(s[i] == s[i-1])
+        {
+           mn = max(mn, v[i]);
+           curr+=v[i];
+        }
+        else 
+        {
+            ans += (curr - mn);
+            curr = v[i];
+            mn = v[i];
+        }
+        if( i==n-1 )
+        {
+            ans += (curr - mn);
+            curr = v[i];
+            mn = v[i];
+        }
+        }
+       return ans;
+    }
+};
