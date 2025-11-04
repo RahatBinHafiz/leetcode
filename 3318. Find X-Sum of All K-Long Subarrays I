@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> findXSum(vector<int>& v, int k, int x) {
+        int n = v.size();
+        map<int,int>mp;
+        vector<int>ans;
+         for(int j = 0; j<k; j++)
+           {
+            mp[v[j]]++;
+           }
+
+
+        for(int i = 0; i<=n-k; i++)
+        {
+           if(i>0 && i+k-1<n)
+           {
+            mp[v[i-1]]--;
+            mp[v[i+k-1]]++;
+           } 
+          
+           vector<pair<int,int>>vp(mp.begin(), mp.end());
+           sort(vp.begin(),vp.end(),[](auto &a, auto&b){
+           if(a.second == b.second)
+           return a.first > b.first;
+           return a.second>b.second;
+           });
+           int sum = 0;
+           for(auto i :vp) cout << i.first << " " << i.second<< endl;
+           for(int k = 0; k<min(x,(int)vp.size()); k++)
+           {
+             //cout << vp[k].first<<" " <<vp[k].second << endl;
+             sum+=(vp[k].first * vp[k].second);
+           }
+           cout << endl;
+           ans.push_back(sum);
+        }
+        return ans;
+    }
+};
