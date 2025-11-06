@@ -1,0 +1,73 @@
+class Solution {
+private:
+    void dfs(int station, int group_id, 
+             unordered_set<int>& online,
+             unordered_map<int, int>& station_group,
+             unordered_map<int, priority_queue<int, vector<int>, greater<int>>>& min_heaps,
+             unordered_map<int, vector<int>>& adj) {
+        if (online.count(station)) {
+            return;
+        }
+        online.insert(station);
+        station_group[station] = group_id;
+        min_heaps[group_id].push(station);
+        
+        for (int nei : adj[station]) {
+            if (!online.count(nei)) {
+                dfs(nei, group_id, online, station_group, min_heaps, adj);
+            }
+        }
+    }
+
+public:
+    vector<int> processQueries(int c, vector<vector<int>>& connections, vector<vector<int>>& queries) {
+        // Build adjacency list
+        unordered_map<int, vector<int>> adj;
+        for (const auto& conn : connections) {
+            int u = conn[0], v = conn[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        unordered_set<int> online; // track online stations
+        unordered_map<int, int> station_group;
+        unordered_map<int, priority_queue<int, vector<int>, greater<int>>> min_heaps;
+
+        // Build connected components
+        for (int s = 1; s <= c; s++) {
+            if (!online.count(s)) {
+                dfs(s, s, online, station_group, min_heaps, adj);
+            }
+        }
+
+        vector<int> res;
+        for (const auto& query : queries) {
+            int q_type = query[0];
+            int q_station = query[1];
+            
+            if (q_type == 1) {
+                if (online.count(q_station)) {
+                    res.push_back(q_station);
+                    continue;
+                }
+                
+                int group_id = station_group[q_station];
+                auto& min_heap = min_heaps[group_id];
+                
+                while (!min_heap.empty() && !online.count(min_heap.top())) {
+                    min_heap.pop();
+                }
+                
+                if (!min_heap.empty()) {
+                    res.push_back(min_heap.top());
+                } else {
+                    res.push_back(-1);
+                }
+            } else {
+                online.erase(q_station);
+            }
+        }
+        
+        return res;
+    }
+};
