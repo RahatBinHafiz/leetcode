@@ -1,0 +1,57 @@
+class Solution {
+public:
+    #define ll long long int
+    bool check(vector<ll>&v, int r, int k, ll val)
+    {
+        ll n = v.size() - 1;
+        ll sum = 0;
+        ll rem = k;
+        vector<ll>diff = v;
+       // for(auto i:diff) cout << i << " "; cout << endl;
+        for(ll i = 0; i<n; i++)
+        {
+           sum+=diff[i];
+           if(sum<val)
+           {
+             ll add = val - sum;
+             if(add > rem)
+             {
+                return false;
+             }
+             rem -= add;
+             ll j = min(n,2*r+i+1);
+             diff[j] -= add;
+             sum+=add;
+           }
+        }
+      return true;
+    }
+
+    long long maxPower(vector<int>& stations, int r, int k) {
+        int n = stations.size();
+        vector<ll>pre(n+1);
+        for(int i = 0; i<n ; i++)
+        {
+            ll l = max(0, i-r);
+            ll ri = min(n, i +r+1);
+            pre[l] += stations[i];
+            pre[ri] -= stations[i];
+        }
+        //for(auto i : pre) cout << i << " "; cout << endl;
+
+        ll low = ranges::min(stations);
+        ll high = accumulate(stations.begin(), stations.end(), 0LL) + k;
+        ll ans = 0;
+        while(low <= high)
+        {
+        ll mid = low + (high - low )/2;
+        if(check(pre,r,k,mid))
+        {
+           ans = mid; 
+           low = mid+1;
+        }
+        else high = mid-1;
+        }
+        return ans;
+    }
+};
