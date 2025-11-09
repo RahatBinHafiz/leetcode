@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool makeStringsEqual(string s, string target) {
+        int s1 = 0, s0 = 0, t1=0, t0 = 0;
+        for(auto i:s)
+        {
+            i == '0' ? s0++: s1++;
+        }
+          for(auto i:target)
+        {
+            i == '0' ? t0++: t1++;
+        }
+        if((s1&&t1)||(s1==0&&t1==0)) return true;
+        else return false; 
+    }
+};
