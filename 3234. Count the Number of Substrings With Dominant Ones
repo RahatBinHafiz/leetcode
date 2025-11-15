@@ -1,0 +1,32 @@
+class Solution {
+public:
+    #define ll long long int
+    int numberOfSubstrings(string s) {
+        int n = s.size();
+        vector<int> v;
+        for (int i = 0; i < n; i++)
+            if (s[i] == '0') v.push_back(i);
+
+        int len = v.size();
+        ll ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            int idx = lower_bound(v.begin(), v.end(), i) - v.begin();
+            int x = (idx < len ? v[idx] : n);
+            ans += x - i;  
+
+            for (int k = 1; idx + k - 1 < len; k++) {
+            ll minJ = i + 1LL * k * k + k - 1;
+                if (minJ >= n) break;
+            ll kthZeroPos = v[idx + k - 1];
+                ll  j = max(minJ, kthZeroPos);
+                ll xPos = (idx + k < len ? v[idx + k] : n);
+
+                if (j >= xPos) continue;
+
+                ans += (xPos - j);
+            }
+        }
+        return (int)ans;
+    }
+};
