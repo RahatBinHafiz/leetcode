@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int minLengthAfterRemovals(string s) {
+        map<char,int>mp;
+        for(auto i:s) mp[i]++;
+        int a = mp.count('a')?mp['a']:0;
+        int b = mp.count('b')?mp['b']:0;
+        return max(a,b) - min(a,b);
+    }
+};©leetcode
