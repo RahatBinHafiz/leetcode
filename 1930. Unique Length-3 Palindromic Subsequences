@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        int n = s.size();
+        int ans = 0;
+        set<char>st; st.insert(s.begin(),s.end());
+        for(auto i:st)
+        {
+            int l = -1, r = -1;
+            for(int j = 0; j<n; j++)
+            {
+                if(s[j]==i)
+                {
+                     if(l==-1) l = j; else r = j;
+                }
+            }
+            set<char>x;
+            if(l!=-1 && r!= -1)
+            {
+                x.insert(s.begin()+l+1, s.begin()+r);
+            }
+            ans+=x.size();
+        }
+        return ans;
+    }
+};
