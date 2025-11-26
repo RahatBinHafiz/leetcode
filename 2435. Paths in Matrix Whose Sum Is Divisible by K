@@ -1,0 +1,41 @@
+class Solution {
+public:
+    #define ll long long int
+    vector<vector<int>>grid;
+    vector<vector<vector<ll>>> cache;
+    ll row , col ,k;
+    ll mod = 1e9 + 7;
+    ll dfs (int r, int c, int rem)
+    {
+       if(r == row - 1 && c == col -1)
+       {
+         rem = (rem + grid[r][c])%k;
+         return (rem == 0 ? 1: 0);
+       }
+       
+       if(r>= row || c>=col)
+       {
+        return 0;
+       }
+
+       if(cache[r][c][rem] != -1)
+       return cache[r][c][rem];
+
+       int newrem = (rem + grid[r][c]) %k ;
+       ll down = dfs(r+1, c, newrem);
+       ll right = dfs(r, c+1, newrem);
+
+       return cache[r][c][rem] = (down + right) % (mod) ;
+
+    }
+
+    int numberOfPaths(vector<vector<int>>& g, int K) {
+        grid = g; 
+        k = K;
+        row = g.size();
+        col = g[0].size();
+
+        cache.assign(row, vector<vector<ll>>(col, vector<ll>(k,-1)));
+    return dfs(0, 0 , 0);
+    }
+};
