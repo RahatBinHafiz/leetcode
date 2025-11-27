@@ -1,0 +1,19 @@
+class Solution {
+public:
+    #define ll long long int
+    long long maxSubarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<ll>pre(k,1e18);
+        pre[k-1] = 0;
+        ll sum = 0;
+        ll ans = -1e18;
+        for(int i = 0; i<n; i++)
+        {  
+            sum += nums[i];
+            ans = max(ans, sum - pre[i%k]);
+            pre[i%k] = min(pre[i%k],sum );
+        }
+        return ans;
+
+    }
+};
