@@ -1,0 +1,42 @@
+class Solution {
+public:
+    #define ll long long int
+    vector<vector<int>>adj;
+    vector<int>val;
+    ll mod , res;
+    ll dfs(int cur, int par)
+    {
+       ll sum = val[cur];
+       for(auto& child:adj[cur])
+       {
+          if(child != par)
+          {
+            sum += dfs(child, cur);
+          }
+       }
+       
+       if(sum % mod == 0)
+       {
+          res ++; 
+          return 0;
+       }
+       return sum;
+
+    }
+
+    int maxKDivisibleComponents(int n, vector<vector<int>>& edges, vector<int>& values, int k) {
+     val = values;
+     adj.assign(n,{});
+
+     for(auto& i:edges)
+     {
+        adj[i[0]].push_back(i[1]);
+        adj[i[1]].push_back(i[0]);
+     }   
+     res = 0;
+     mod = k;
+     dfs(0,-1);
+     return res;
+    
+    }
+};
