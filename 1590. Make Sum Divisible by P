@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+         int sum=0; 
+    for(auto i:nums)
+    {
+        sum=(sum+i)%p;
+    }
+    
+    int minlen=nums.size();
+    int target =sum%p;
+    if(target==0) return 0;
+    else 
+    {
+        int currentsum=0;
+        map<int,int>mp;
+        mp[0]=-1;
+
+        for(int i=0;i<nums.size();i++)
+        {
+            currentsum=(currentsum+nums[i])%p;
+            int need=(currentsum-target+p)%p;
+            if(mp.find(need)!=mp.end())
+            {
+                minlen=min(minlen,i-mp[need]);
+            }
+            mp[currentsum]=i;
+        }
+    
+    }
+    return nums.size()==minlen?-1:minlen;
+    }
+};
