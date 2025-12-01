@@ -1,0 +1,18 @@
+class Solution {
+public:
+    #define ll long long int
+    long long maxRunTime(int n, vector<int>& v) {
+         ll sum = accumulate(v.begin() , v.end(), 0ll);
+         ll l = 1, r = sum / n;
+         while(l < r)
+         {
+            ll target = r - (r-l)/2;
+            ll extra = 0;
+            for(auto i:v) extra += min(target,(ll)i);
+            if(extra >= (ll)n*target)
+            l = target;
+            else r = target-1;
+         }
+         return l;
+    }
+};
