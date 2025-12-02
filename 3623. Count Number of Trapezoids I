@@ -1,0 +1,20 @@
+class Solution {
+public:
+    #define ll long long int 
+    ll mod = 1e9 + 7;
+    int countTrapezoids(vector<vector<int>>& points) {
+        unordered_map< ll , ll > mp;
+        for(auto& i: points)
+        mp[i[1]]++;
+
+        ll ans =  0, sum = 0;
+        for(auto& i:mp)
+        {
+            ll x = i.second;
+            ll edge = x*(x-1)/2;
+            ans = (ans+edge*sum)%mod;
+            sum = (sum + edge)%mod;
+        }
+        return ans;
+    }
+};
