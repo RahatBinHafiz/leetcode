@@ -1,0 +1,97 @@
+class Solution {
+public:
+    using ll = long long;
+
+    int countTrapezoids(vector<vector<int>>& points) {
+        int n = points.size();
+
+        // slope -> list of intercept constants
+        unordered_map<long long, vector<long long>> slopeToC;
+
+        // midpoint key -> list of slopes
+        unordered_map<long long, vector<long long>> midToSlope;
+
+        auto encodeSlope = [&](int dy, int dx){
+            return ( (long long)dy << 32 ) ^ (unsigned long long)dx;
+        };
+
+        auto encodeMid = [&](int mx, int my){
+            return ( (long long)mx << 32 ) ^ (unsigned long long)my;
+        };
+
+        for(int i = 0; i < n; i++){
+            int x1 = points[i][0], y1 = points[i][1];
+            for(int j = i + 1; j < n; j++){
+                int x2 = points[j][0], y2 = points[j][1];
+
+                int dx = x2 - x1;
+                int dy = y2 - y1;
+
+                if(dx < 0 || (dx == 0 && dy < 0)){
+                    dx = -dx;
+                    dy = -dy;
+                }
+
+                int g = gcd(abs(dx), abs(dy));
+                dx /= g;
+                dy /= g;
+
+                long long slopeKey = encodeSlope(dy, dx);
+
+                long long C = (long long)dy * x1 - (long long)dx * y1;
+
+                slopeToC[slopeKey].push_back(C);
+
+                long long mx = x1 + x2;
+                long long my = y1 + y2;
+
+                long long midKey = encodeMid(mx, my);
+                midToSlope[midKey].push_back(slopeKey);
+            }
+        }
+
+        long long ans = 0;
+
+        for(auto &it : slopeToC){
+            auto &v = it.second;
+            if(v.size() <= 1) continue;
+
+            sort(v.begin(), v.end());
+
+            long long sum = 0;
+            long long prev = v[0], cnt = 1;
+            for(int i = 1; i < v.size(); i++){
+                if(v[i] == prev) cnt++;
+                else{
+                    ans += sum * cnt;
+                    sum += cnt;
+                    prev = v[i];
+                    cnt = 1;
+                }
+            }
+            ans += sum * cnt;
+        }
+
+        for(auto &it : midToSlope){
+            auto &v = it.second;
+            if(v.size() <= 1) continue;
+
+            sort(v.begin(), v.end());
+
+            long long sum = 0;
+            long long prev = v[0], cnt = 1;
+            for(int i = 1; i < v.size(); i++){
+                if(v[i] == prev) cnt++;
+                else{
+                    ans -= sum * cnt;
+                    sum += cnt;
+                    prev = v[i];
+                    cnt = 1;
+                }
+            }
+            ans -= sum * cnt;
+        }
+
+        return (int)ans;
+    }
+};
