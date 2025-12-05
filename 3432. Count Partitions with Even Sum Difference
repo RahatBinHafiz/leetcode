@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int countPartitions(vector<int>& nums) {
+        int sum = accumulate(nums.begin(),nums.end(),0);
+        int ans = 0;
+        nums.pop_back();
+        int x = 0;
+        for(auto i:nums)
+        {
+            x+=i;
+            if((abs(sum - 2*x)) %2 ==0) ans++;
+        }
+        return ans;
+    }
+};
