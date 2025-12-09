@@ -1,0 +1,22 @@
+class Solution {
+public:
+    #define ll long long int 
+    ll mod = 1e9 + 7;
+    int specialTriplets(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<ll,ll>rightmap, leftmap;
+
+        ll ans = 0;
+
+        for(auto i:nums) rightmap[i]++;
+        for(auto & i:nums)
+        {
+            rightmap[i]--;
+            ll val = i*2;
+            ans= (ans + rightmap[val]*leftmap[val] %mod) %mod;
+            
+            leftmap[i]++;
+        }
+       return ans;
+    }
+};
