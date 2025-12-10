@@ -1,0 +1,16 @@
+class Solution {
+public:
+    #define ll = long long int
+    int countPermutations(vector<int>& v) {
+        int mod = 1e9+7;
+
+        int ans = 1;
+        int n = v.size();
+        if(v[0] >= *min_element(v.begin()+1,v.end() )) {return 0;}
+        for(int i =1 ; i<n; i++)
+        {
+            ans = (ans*1ll * i)%mod;
+        }
+        return ans;
+    }
+};
