@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int countCoveredBuildings(int n, vector<vector<int>>& v) {
+        vector<int>maxy(n+1);
+        vector<int>maxx(n+1);
+        vector<int>miny(n+1,n+1);
+        vector<int>minx(n+1,n+1);
+
+        for(auto i:v)
+        {
+            int x = i[0], y = i[1];
+
+            maxy[x] = max(maxy[x], y);
+            miny[x] = min(miny[x], y);
+            maxx[y] = max(maxx[y], x);
+            minx[y] = min(minx[y], x);
+            
+
+        }
+        int ans = 0;
+
+        for(auto i:v)
+        {
+            int x = i[0], y = i[1];
+            //cout<< maxy[x] << " " << miny[x] <<" " << maxx[y] << " " << minx[y] << endl;
+            if(maxy[x] > y && miny[x] < y && maxx[y] > x && minx[y] < x  ) ans++;
+        }
+
+        return ans;
+    }
+};
