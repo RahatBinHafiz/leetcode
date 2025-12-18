@@ -1,0 +1,30 @@
+class Solution {
+public:
+    #define ll long long int
+    long long maxProfit(vector<int>& p, vector<int>& s, int k) {
+        int n = p.size();
+        ll ans = 0;
+        vector<ll>presum(n+1), totalsum(n+1);
+
+        for(int i =0; i<n; i++){
+            presum[i+1] = presum[i] + p[i];
+        }
+        for(int i = 0; i<n ; i++)
+        {
+            totalsum[i+1] = totalsum[i] + p[i]*s[i];
+        }
+        ans = totalsum[n];
+        
+        for(int i = 0; i+k<= n; i++)
+        {
+           ll ind = k/2 + i;
+           ll sum = presum[i+k] - presum[ind];
+           ll final = totalsum[n] - totalsum[i+k] + sum +totalsum[i];
+           //cout << final << endl;
+           ans = max(ans,final);
+
+        }
+        
+        return ans;
+    }
+};
