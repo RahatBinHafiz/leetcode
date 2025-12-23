@@ -1,0 +1,57 @@
+class Solution {
+public:
+     #define ll long long 
+
+     int sc(vector<pair<int,int>>&vp, int tar)
+ {
+    int high=vp.size();
+    int low=0;
+    int index=-1;
+    while(low<high)
+    {
+        int mid=low+(high-low)/2;
+        if(vp[mid].first>tar)
+        {
+            index=mid;
+            high=mid;
+        }
+        else low=mid+1;
+    }
+    return index;
+ }
+ int maxTwoEvents(vector<vector<int>>& events) {
+        vector<pair<int,int>>vp;
+        int maxindex=0;
+        ll maxval=-1;
+        for(auto i:events)
+        {
+           vp.emplace_back(i[0],i[2]);
+            maxval=max(maxval,1ll*i[2]);
+        }
+        sort(vp.begin(),vp.end());
+        ll val=-1;
+        for(int i=vp.size()-1;i>=0;i--)
+        {
+            val=max(val,1ll*vp[i].second);
+            vp[i].second=val;
+        }
+       
+        ll ans=0;
+        for(int i=0;i<vp.size();i++)
+        {
+           int ind=sc(vp,events[i][1]);
+          // cout<<ind<<endl;
+           if(ind ==-1)
+           {
+            ans=max(ans,1ll*events[i][2]);
+
+           }
+           else 
+           {
+             ans=max(ans,1ll*vp[ind].second+events[i][2]);
+           }
+        }
+        return ans;
+
+    }
+};
