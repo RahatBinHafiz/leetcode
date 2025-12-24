@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minimumBoxes(vector<int>& apple, vector<int>& capacity) {
+        int ans = 0;
+        sort(capacity.rbegin(),capacity.rend());
+        int sum = accumulate(apple.begin(),apple.end(),0);
+        int ind = 0;
+        while(sum)
+        {
+            sum-=capacity[ind]; ind++;
+            ans++;
+            if(sum<=0) break;
+        }
+        return ans;
+    }
+};
