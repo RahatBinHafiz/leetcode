@@ -1,0 +1,16 @@
+class Solution {
+public:
+    long long maximumHappinessSum(vector<int>& v, int k) {
+        sort(v.rbegin(),v.rend());
+    long long int sum=0;
+        int count=0;
+    for(int i=0;i<k;i++)
+    {
+        v[i]-=count;
+        if(v[i]<=0) break;
+        sum+=v[i];
+        count++;
+    }
+    return sum;
+    }
+};
