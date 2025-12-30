@@ -1,0 +1,71 @@
+class Solution {
+public:
+    bool check(vector<int>&v)
+{
+   for(int i=0;i<7;i++)
+   {
+      if(v[i]!=v[i+1])
+      {
+         return false; break;
+      }
+   }
+   return true;
+}
+    int numMagicSquaresInside(vector<vector<int>>& grid) {
+        int row=grid.size(),col=grid[0].size();  
+      int count=0;
+        if(row<3||col<3) return 0;
+        else{
+             int i=0,j=0;
+             while(1)
+             {
+                set<int>s; vector<int>v(20,0); int freq=0;
+                bool ok=true;
+                 for(int x=i;x<i+3;x++)
+                 {
+                    for(int y=j;y<j+3;y++)
+                    {
+                        //if(!ok) continue;
+                        if(grid[x][y]>=1&&grid[x][y]<=9)
+                        { 
+                        freq++;
+                        s.insert(grid[x][y]);
+                        if(freq==1||freq==2||freq==3)  v[0]+=grid[x][y];
+                        if(freq==4||freq==5||freq==6)  v[1]+=grid[x][y];
+                        if(freq==7||freq==8||freq==9)  v[2]+=grid[x][y];
+                        if(freq==1||freq==4||freq==7)  v[3]+=grid[x][y];
+                        if(freq==2||freq==5||freq==8)  v[4]+=grid[x][y];
+                        if(freq==3||freq==6||freq==9)  v[5]+=grid[x][y];
+                        if(freq==1||freq==5||freq==9)   v[6]+= grid[x][y]  ; 
+                        if(freq==3||freq==5||freq==7)   v[7]+= grid[x][y]  ; 
+                        }
+                        // else {
+                        //     ok=false; break;
+                        // }
+                    }
+                 }
+               // if(!ok) continue;
+                 if(s.size()==9){
+                  {
+                 // cout<<check(v)<<' ' <<'4'<<endl;
+                     if(check(v))
+                     {
+                        count++;
+
+                     }
+                  }
+                 }
+                  v.clear();
+                  s.clear();
+                if(i+3>=row&&j+3>=col) break;
+                 j++;
+                 if(j+3>col) {
+                    i++;
+                    j=0;
+                 }
+             }
+        }
+        
+        return count;
+    }
+};
