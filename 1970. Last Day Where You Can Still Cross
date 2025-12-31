@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        int left = 1;
+        int right = cells.size();
+        int ans = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (canCross(mid, row, col, cells)) {
+                ans = mid;      // Mid is feasible, try a later day
+                left = mid + 1;
+            } else {
+                right = mid - 1; // Mid is not feasible, try an earlier day
+            }
+        }
+        return ans;
+    }
+
+private:
+    bool canCross(int day, int row, int col, const vector<vector<int>>& cells) {
+        // 1. Create grid and mark water for the given 'day'
+        // Using a 1D vector flattened for slightly better memory locality, 
+        // or standard 2D vector. 2D is clearer to read.
+        vector<vector<int>> grid(row, vector<int>(col, 0));
+        
+        for (int i = 0; i < day; ++i) {
+            int r = cells[i][0] - 1; // 1-based to 0-based
+            int c = cells[i][1] - 1;
+            grid[r][c] = 1; // 1 represents water
+        }
+
+        // 2. BFS Initialization
+        queue<pair<int, int>> q;
+        
+        // Add all starting land cells (top row)
+        for (int c = 0; c < col; ++c) {
+            if (grid[0][c] == 0) {
+                q.push({0, c});
+                grid[0][c] = 1; // Mark as visited (reuse 1 to represent visited/water)
+            }
+        }
+
+        // Directions: right, left, down, up
+        int dr[] = {0, 0, 1, -1};
+        int dc[] = {1, -1, 0, 0};
+
+        // 3. BFS Execution
+        while (!q.empty()) {
+            auto [r, c] = q.front();
+            q.pop();
+
+            // If we reached the bottom row
+            if (r == row - 1) return true;
+
+            for (int i = 0; i < 4; ++i) {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+
+                // Check bounds and if cell is land (0)
+                if (nr >= 0 && nr < row && nc >= 0 && nc < col && grid[nr][nc] == 0) {
+                    grid[nr][nc] = 1; // Mark visited
+                    q.push({nr, nc});
+                }
+            }
+        }
+
+        return false;
+    }
+};
