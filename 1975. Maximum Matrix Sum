@@ -1,0 +1,22 @@
+class Solution {
+public:
+    #define ll long long int
+    long long maxMatrixSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        ll sum = 0, mn = 1e9,cnt = 0, z =0;
+        for(int i = 0; i<n; i++)
+        {
+            for(int j = 0; j<n; j++)
+            {
+                mn = min(mn, abs((ll)matrix[i][j]));
+               if(matrix[i][j]<0)
+               {
+                cnt++;
+               }
+               sum+=abs(matrix[i][j]);
+            }
+        }
+        //cout << cnt << " " << mn << endl;
+        return (cnt&1)? (sum-2ll*mn) :sum;
+    }
+};
