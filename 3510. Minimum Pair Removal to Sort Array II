@@ -1,0 +1,81 @@
+class Solution {
+public:
+    #define ll long long int
+    int minimumPairRemoval(vector<int>& nums) {
+        int n = nums.size();
+        vector<ll>temp(n);
+        for(int i = 0; i<n; i++)
+        temp[i] = nums[i];
+
+        set<pair<ll,ll>>sumPair;
+        vector<ll>next(n), prev(n);
+        for(int i = 0; i<n; i++)
+        {
+            next[i] = i+1;
+            prev[i] = i-1;
+        }
+        ll badPairs = 0, ans = 0;
+        for(int i = 0; i<n-1; i++)
+        {
+            if(temp[i] > temp[i+1]) 
+            badPairs++;
+
+            sumPair.insert({temp[i]+temp[i+1],i});
+        }
+        
+        while(badPairs)
+        {
+            int first = sumPair.begin()->second;
+            int second = next[first];
+            int firstleft = prev[first];
+            int secondright = next[second];
+            ll sum = sumPair.begin()->first;
+            sumPair.erase(sumPair.begin());
+
+            if(temp[first] > temp[second]) {
+                badPairs--;
+            }
+
+            if(firstleft >= 0) {
+                if(temp[firstleft] > temp[first] &&
+                temp[firstleft] <= sum) {
+                    badPairs--;
+                } 
+                else if(temp[firstleft] <= temp[first] &&
+                temp[firstleft] > sum) {
+                    badPairs++;
+                }
+            }
+
+            if (secondright < n) {
+                if (temp[secondright] >= temp[second] &&
+                    temp[secondright] < sum) {
+                    badPairs++;
+                }
+                else if (temp[secondright] < temp[second] &&
+                         temp[secondright] >= sum) {
+                    badPairs--;
+                }
+            }
+
+            if(firstleft >= 0) {
+                sumPair.erase({temp[firstleft] + temp[first], firstleft});
+                sumPair.insert({temp[firstleft] + sum, firstleft});
+            }
+
+            if(secondright < n) {
+                sumPair.erase({temp[second] + temp[secondright], second});
+                sumPair.insert({sum + temp[secondright], first});
+                prev[secondright] = first;
+            }
+
+            next[first] = secondright;
+            temp[first] += temp[second];
+            ans++;
+
+
+        }
+
+        return ans;
+    }
+};
