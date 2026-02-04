@@ -1,0 +1,38 @@
+class Solution {
+public:
+    long long maxSumTrionic(vector<int>& nums) {
+        int n = nums.size();
+        long long INF = -1e18; 
+        long long inc1 = INF;
+        long long dec = INF;
+        long long inc2 = INF;
+        long long ans = INF;
+        for (int i = 1; i < n; ++i) {
+            int curr = nums[i];
+            int prev = nums[i-1];
+            long long next_inc1 = INF;
+            long long next_dec = INF;
+            long long next_inc2 = INF;
+            if (curr > prev) {
+                next_inc1 = max((long long)prev + curr, (inc1 == INF ? INF : inc1 + curr)); 
+                long long from_dec = (dec == INF ? INF : dec + curr);  
+                long long extend_inc2 = (inc2 == INF ? INF : inc2 + curr);  
+                next_inc2 = max(from_dec, extend_inc2);  
+            } 
+            else if (curr < prev) {
+                long long from_inc1 = (inc1 == INF ? INF : inc1 + curr);
+                long long extend_dec = (dec == INF ? INF : dec + curr);
+                next_dec = max(from_inc1, extend_dec);
+            }
+            inc1 = next_inc1;
+            dec = next_dec;
+            inc2 = next_inc2;
+
+            if (inc2 != INF) {
+                ans = max(ans, inc2);
+            }
+        }
+
+        return (ans == INF) ? -1 : ans;
+    }
+};
