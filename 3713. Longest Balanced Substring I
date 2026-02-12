@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int longestBalanced(string s) {
+        int ans = 0; 
+        int n= s.size();
+        for(int i=0; i<n; i++)
+        {
+            map<char,int>mp;
+            for(int  j = i; j<n; j++)
+            {
+                char  x = s[j];
+                mp[x]++;
+                int cnt = mp.begin()->second;
+                bool ok = true;
+                for(auto i:mp)
+                {
+                  if(i.second != cnt)
+                  {
+                    ok = false; break;
+                  }
+                }
+                if(ok)
+                {
+                    ans = max(ans, j-i+1);
+                }
+            }
+        }
+        return ans;
+    }
+};
