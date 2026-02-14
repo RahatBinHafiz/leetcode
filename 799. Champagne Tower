@@ -1,0 +1,20 @@
+class Solution {
+public:
+    double champagneTower(int poured, int query_row, int query_glass) {
+        double arr[102][102] = {0};
+        arr[0][0] = poured;
+        for(int i = 0; i<= query_row; i++)
+        {
+            for(int j = 0; j<=i; j++)
+            {
+                double fu = (arr[i][j] - 1 ) /2;
+                if(fu >0)
+                {
+                    arr[i+1][j]+=fu;
+                    arr[i+1][j+1]+=fu;
+                } 
+            }
+        }
+        return min(1.000, arr[query_row][query_glass]);
+    }
+};
