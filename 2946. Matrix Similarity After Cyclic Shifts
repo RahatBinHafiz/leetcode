@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool areSimilar(vector<vector<int>>& mat, int k) {
+        int n = mat.size(), m = mat[0].size();
+        if(k%m == 0) return true;
+        int x = k%m;
+        vector<vector<int>>v = mat;
+        for(int i = 0; i<n; i++)
+        {
+           if(i%2 == 0)
+           {
+            rotate(v[i].begin(), v[i].end()-x, v[i].end() );
+           }
+           else 
+           {
+            rotate(v[i].begin(), v[i].begin()+x, v[i].end() );
+           }
+        }
+        if(v == mat) return true; else return false;
+        }
+};
