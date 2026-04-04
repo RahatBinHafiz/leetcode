@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string decodeCiphertext(string et, int rows) {
+        int n = et.size();
+        int cols = n / rows;
+
+        string ans = "";
+        for(int col = 0; col < cols; col++)
+        {
+            for(int r = 0, c= col; r<rows && c < cols; c++,r++)
+            {
+                int ind = r*cols + c; 
+                ans+=(et[ind]);
+            }
+        }
+        while(!ans.empty() && ans.back() == ' ')
+        {
+            ans.pop_back();
+        }
+        return ans;
+    }
+};
