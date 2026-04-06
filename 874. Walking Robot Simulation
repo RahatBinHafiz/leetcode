@@ -1,0 +1,44 @@
+class Solution {
+public:
+    #define ll long long int
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        ll x = 0, y = 0; 
+        set<pair<int,int>>st;
+        for(auto i:obstacles)
+        {
+            st.insert({i[0], i[1]});
+        }
+
+        int direction[4][2] = {{0,1} , {1,0}, {0, -1} , {-1,0}};
+
+        int d = 0; 
+        ll ans =  0; 
+
+        for(auto& i : commands)
+        {
+            if(i == -1 )
+            {
+                d= (d + 1)%4;
+            }
+            else if( i== -2)
+            {
+                d = (d+3)%4;
+            }
+
+            else
+            {
+                int dx = direction[d][0];
+                int dy = direction[d][1];
+                for(int j = 0; j<i; j++)
+                {
+                if(st.count({x+dx, y+dy})) break;
+                x+=dx; 
+                y+=dy; 
+                }
+            }
+            ans = max(x*x + y*y , ans);
+        }
+
+        return ans;
+    }
+};
