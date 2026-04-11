@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minimumDistance(vector<int>& nums) {
+        int n = nums.size();
+      int ans = INT_MAX;
+      map<int, deque<int>>mp;
+      for(int i = 0; i<n; i++)
+      {
+         mp[nums[i]].push_back(i);
+         if(mp[nums[i]].size() == 3)
+         {
+            ans = min(ans , 2*(mp[nums[i]][2] - mp[nums[i]][0]));
+            mp[nums[i]].pop_front();
+         }
+      }   
+      return ans == INT_MAX ? -1: ans;
+    }
+};
