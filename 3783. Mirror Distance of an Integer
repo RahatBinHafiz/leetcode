@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int mirrorDistance(int n) {
+        int x=  n; 
+        int nextval = 0; 
+        while(n)
+        {
+            nextval*=10;
+            nextval+=(n%10);
+
+           // cout << nextval << endl;
+            n/=10;
+        }
+        return abs(nextval - x);
+    }
+};
