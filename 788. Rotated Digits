@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int rotatedDigits(int n) {
+        int ans = 0; 
+        
+        for(int i = 1; i <= n; i++) {
+            bool valid = true;
+            bool different = false; 
+            int x = i;
+            
+            while(x > 0) {
+                int a = x % 10; 
+                if(a == 3 || a == 4 || a == 7) {
+                    valid = false; 
+                    break;
+                }
+                if(a == 2 || a == 5 || a == 6 || a == 9) {
+                    different = true;
+                }
+                
+                x /= 10;
+            }
+            
+            if(valid && different) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
