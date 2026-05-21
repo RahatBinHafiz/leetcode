@@ -1,0 +1,28 @@
+class Solution {
+public:
+    #define ll long long int
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        set<ll>st;
+        for(auto n : arr1)
+        {
+            while(n)
+            {
+                st.insert(n);
+                n/=10;
+            }
+        }
+        ll ans = 0;
+        for(auto n:arr2)
+        {
+           while(n)
+           {
+             if(st.count(n))
+             {
+                ans = max(ans, (ll)log10(n) + 1);
+             }
+                n/=10;
+           }
+        }
+        return ans;
+    }
+};
