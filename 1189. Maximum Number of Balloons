@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxNumberOfBalloons(string text) {
+        map<char,int>mp;
+        for(auto& i:text) mp[i]++;
+        int ans = 0, b = 0, a= 0, l=0, o=0,n=0;
+        for(auto i:mp)
+        {
+          if(i.first == 'a') a = i.second;
+          if(i.first == 'b') b= i.second;
+          if(i.first == 'l') l = i.second/2;
+          if(i.first == 'o') o = i.second/2;
+          if(i.first == 'n') n = i.second;
+        }
+        return min({b, a, l, o,n});
+    }
+};
